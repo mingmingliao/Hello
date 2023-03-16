@@ -1,37 +1,20 @@
 <template>
     <lightning-card title="Travel Itinerary">
-        <lightning-button label="New Trip" slot="actions"></lightning-button>
+        <lightning-button
+            onclick={handleClick}
+            aria-haspopup="dialog"
+            label="Create New Trip"
+            slot="actions">
+        </lightning-button>
+        <!-- <lightning-button label="New Trip" slot="actions" onclick={handleClick}></lightning-button> -->
         <!-- Later put this as a list that pulls from a database of current active trips -->
         <lightning-tabset>
             <lightning-tab label="Japan">
-                <div class="slds-grid slds-wrap slds-gutters slds-p-around_small">
-                    <div class="slds-col slds-size_1-of-2">
-                        <lightning-accordion allow-multiple-sections-open>
-                            <lightning-accordion-section name="food" label="Food">
-                                <lightning-card>
-                                    <lightning-button label="New Food Item" slot="actions"></lightning-button>
-                                </lightning-card>
-                            </lightning-accordion-section>
-                            <lightning-accordion-section name="sights" label="Sights">
-                                <lightning-card>
-                                    <lightning-button label="New Sights Item" slot="actions"></lightning-button>
-                                </lightning-card>
-                            </lightning-accordion-section>
-                            <lightning-accordion-section name="info" label="Important Info">
-                                <lightning-card>
-                                    <lightning-button label="New Info Item" slot="actions"></lightning-button>
-                                </lightning-card>
-                            </lightning-accordion-section>
-                        </lightning-accordion>
-                    </div>
-                    <div class="slds-col slds-size_1-of-2">
-                        <!-- update map to be centered on focus point of trip -->
-                        <lightning-map></lightning-map>
-                        <!-- add a slider here maybe to edit map size -->
-                    </div>   
-                </div>
+                <c-travel-app-trip></c-travel-app-trip>
             </lightning-tab>
-            <lightning-tab label="China"></lightning-tab>
+            <lightning-tab label="China">
+                <c-travel-app-trip></c-travel-app-trip>
+            </lightning-tab>
         </lightning-tabset>
     </lightning-card>
 </template>

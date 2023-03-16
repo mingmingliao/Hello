@@ -1,7 +1,7 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement } from 'lwc';
 import CreateTripModal from 'c/createTripModal';
 
-export default class Travel_app extends LightningElement {
+export default class TicketsAndReservations extends LightningElement {
     handleClick() {
         CreateTripModal.open({
           // maps to developer-created `@api options`
