@@ -1,0 +1,27 @@
+<template>
+<div class="c-container">
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item padding="medium" size="12">
+                <lightning-layout>
+                    <lightning-layout-item padding="around-small" size="6">
+                        <div class="page-section page-right">
+                                <!-- update map to be centered on focus point of trip -->
+                                <c-travel-app-trip-map></c-travel-app-trip-map>
+                                <!-- add a slider here maybe to edit map size -->
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="medium" size="6">
+                        <div class="page-section page-main">
+                                <lightning-accordion allow-multiple-sections-open>
+                                    <c-restaurants></c-restaurants>
+                                    <c-sights></c-sights>
+                                    <c-tickets-and-reservations></c-tickets-and-reservations>
+                                    <c-checklist></c-checklist>
+                                </lightning-accordion>    
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+</template>
