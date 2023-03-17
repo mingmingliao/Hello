@@ -1,0 +1,21 @@
+<template>
+    <lightning-card title="Travel Itinerary">
+        <lightning-button
+            onclick={handleClick}
+            aria-haspopup="dialog"
+            label="Create New Trip"
+            slot="actions">
+        </lightning-button>
+
+        <lightning-tabset>
+            <template for:each={trips} for:item="trip">
+                <div key={trip.id}>
+                    <lightning-tab label={trip.Name}>
+                        <!-- todo send in data from item here -->
+                        <c-travel-app-trip></c-travel-app-trip>
+                    </lightning-tab>
+                </div>
+            </template>
+        </lightning-tabset>
+    </lightning-card>
+</template>
