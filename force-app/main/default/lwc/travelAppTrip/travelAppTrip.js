@@ -1,3 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, wire, track, api } from "lwc";
 
-export default class TravelAppTrip extends LightningElement {}
+export default class TravelAppTrip extends LightningElement {
+}
