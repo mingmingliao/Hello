@@ -4,15 +4,21 @@
             <lightning-button
                 onclick={handleClick}
                 aria-haspopup="dialog"
-                label="Add a Restaurant"
-                slot="actions">
+                label="Add a Restaurant">
             </lightning-button>
-            
+
             <lightning-datatable
                 key-field="id"
                 data={data}
                 columns={columns}>
             </lightning-datatable>
+            
+            <lightning-button
+                onclick={handleClick}
+                aria-haspopup="dialog"
+                label="Add a Restaurant">
+            </lightning-button>
+            
         </lightning-card>
     </lightning-accordion-section>
 </template>
