@@ -1,5 +1,5 @@
 <template>
-<div class="c-container">
+    <div class="c-container">
         <lightning-layout multiple-rows="true">
             <lightning-layout-item padding="medium" size="12">
                 <lightning-layout>
@@ -13,7 +13,7 @@
                     <lightning-layout-item padding="medium" size="6">
                         <div class="page-section page-main">
                                 <lightning-accordion allow-multiple-sections-open>
-                                    <c-restaurants></c-restaurants>
+                                    <c-restaurants trip-id={tripId}></c-restaurants>
                                     <c-sights></c-sights>
                                     <c-tickets-and-reservations></c-tickets-and-reservations>
                                     <c-checklist></c-checklist>

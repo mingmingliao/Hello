@@ -1,22 +1,32 @@
 <template>
-    <lightning-accordion-section name="restaurants" label="Restaurants">
+    <lightning-accordion-section trip-id={tripId} name="restaurants" label="Restaurants">
         <lightning-card>
+
+            <lightning-datatable
+                key-field="id"
+                data={restaurantData}
+                onrowselection={handleRowSelection}
+                columns={columns}>
+            </lightning-datatable>
+            
+            <!-- use inside modal -->
+            <!-- <lightning-record-form object-api-name={ObjectApiName} fields={ContactFieldList} record-id={recordId} onsuccess={contactHandleUpdate}></lightning-record-form> -->
+
             <lightning-button
                 onclick={handleClick}
                 aria-haspopup="dialog"
                 label="Add a Restaurant">
             </lightning-button>
 
-            <lightning-datatable
-                key-field="id"
-                data={data}
-                columns={columns}>
-            </lightning-datatable>
-            
             <lightning-button
-                onclick={handleClick}
+                onclick={addR}
                 aria-haspopup="dialog"
-                label="Add a Restaurant">
+                label="Test button to add random restaurant">
+            </lightning-button>
+            <lightning-button
+                onclick={handleDelete}
+                aria-haspopup="dialog"
+                label="Remove Selected">
             </lightning-button>
             
         </lightning-card>

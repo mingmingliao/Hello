@@ -12,7 +12,7 @@
                 <div key={trip.id}>
                     <lightning-tab label={trip.Name}>
                         <!-- todo send in data from item here -->
-                        <c-travel-app-trip></c-travel-app-trip>
+                        <c-travel-app-trip trip-id={trip.Id}></c-travel-app-trip>
                     </lightning-tab>
                 </div>
             </template>
