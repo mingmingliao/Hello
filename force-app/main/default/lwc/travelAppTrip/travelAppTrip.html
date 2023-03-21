@@ -14,8 +14,8 @@
                         <div class="page-section page-main">
                                 <lightning-accordion allow-multiple-sections-open>
                                     <c-restaurants trip-id={tripId}></c-restaurants>
-                                    <c-sights></c-sights>
-                                    <c-tickets-and-reservations></c-tickets-and-reservations>
+                                    <c-sights trip-id={tripId}></c-sights>
+                                    <c-tickets-and-reservations trip-id={tripId}></c-tickets-and-reservations>
                                     <c-checklist></c-checklist>
                                 </lightning-accordion>    
                         </div>
