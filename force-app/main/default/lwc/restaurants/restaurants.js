@@ -126,7 +126,7 @@ export default class Restaurants extends LightningElement {
             this.dispatchEvent(
                 new ShowToastEvent({
                 title: 'Success',
-                message: 'Added restaurant!',
+                message: 'Deleted restaurant!',
                 variant: 'success'
                 })
             );
