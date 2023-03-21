@@ -70,6 +70,7 @@ export default class TicketsAndReservations extends LightningElement {
         return recordInput;
     }
     
+    // doesnt work because we dont have a related list object yet so gg
     handleAdd() {
         this.recordInput = this.recordInputForCreate();
         this.recordInput.fields.Name = "Add Test"
