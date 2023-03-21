@@ -100,6 +100,7 @@ export default class TicketsAndReservations extends LightningElement {
     handleDelete() {
         const promises = this.ticketAndReservationSelectedRows.map(ticketAndReservation => {
             deleteRecord(ticketAndReservation.Id)
+        });
           Promise.all(promises).then(ticketAndReservationList => {
             console.log(ticketAndReservationList)
             this.dispatchEvent(

@@ -96,6 +96,8 @@ export default class Sights extends LightningElement {
     handleDelete() {
         const promises = this.sightSelectedRows.map(sight => {
             deleteRecord(sight.Id)
+            
+        });
         Promise.all(promises).then(sightList => {
             console.log(sightList)
             this.dispatchEvent(
@@ -116,7 +118,7 @@ export default class Sights extends LightningElement {
             }))
             console.log(error)
         })
-      }
+    }
 
     handleClick() {
         sightsModal.open({
@@ -127,8 +129,9 @@ export default class Sights extends LightningElement {
           ]
         }).then((result) => {
             console.log(result);
-        });
+        })
     }
+
 
     // Updates data table row selection in code
     handleRowSelection(event){
