@@ -1,9 +1,9 @@
 import { LightningElement } from 'lwc';
-import CreateTripModal from 'c/createTripModal';
+import ticketsAndReservationsModal from 'c/ticketsAndReservationsModal';
 
 export default class TicketsAndReservations extends LightningElement {
     handleClick() {
-        CreateTripModal.open({
+        ticketsAndReservationsModal.open({
           // maps to developer-created `@api options`
           options: [
             { id: 1, label: 'Option 1' },
