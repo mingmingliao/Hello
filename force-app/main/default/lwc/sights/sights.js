@@ -6,6 +6,7 @@ import { deleteRecord, getRecordCreateDefaults,
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 import SIGHT_OBJECT from '@salesforce/schema/Sight__c';
+import sightsModal from 'c/sightsModal';
 
 export default class Sights extends LightningElement {
     @api tripId;
@@ -95,7 +96,6 @@ export default class Sights extends LightningElement {
     handleDelete() {
         const promises = this.sightSelectedRows.map(sight => {
             deleteRecord(sight.Id)
-        });
         Promise.all(promises).then(sightList => {
             console.log(sightList)
             this.dispatchEvent(
@@ -116,15 +116,23 @@ export default class Sights extends LightningElement {
             }))
             console.log(error)
         })
+      }
+
+    handleClick() {
+        sightsModal.open({
+          // maps to developer-created `@api options`
+          options: [
+            { id: 1, label: 'Option 1' },
+            { id: 2, label: 'Option 2' },
+          ]
+        }).then((result) => {
+            console.log(result);
+        });
     }
 
     // Updates data table row selection in code
     handleRowSelection(event){
         this.sightSelectedRows = event.detail.selectedRows
-    }
-
-    handleClick() {
-        // open a modal with a record creation form
     }
 
 }

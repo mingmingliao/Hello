@@ -6,6 +6,7 @@ import { deleteRecord, getRecordCreateDefaults,
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 import RESTAURANT_OBJECT from '@salesforce/schema/Restaurant__c';
+import restaurantModal from 'c/restaurantModal';
 
 export default class Restaurants extends LightningElement {
     @api tripId;
@@ -104,7 +105,15 @@ export default class Restaurants extends LightningElement {
     }
 
     handleClick() {
-        // open a modal with a record creation form
+        restaurantModal.open({
+          // maps to developer-created `@api options`
+          options: [
+            { id: 1, label: 'Option 1' },
+            { id: 2, label: 'Option 2' },
+          ]
+        }).then((result) => {
+            console.log(result);
+        });
     }
 
     // Deletes selected restaurants in the list. Fires off a toast message for successful deletion, or for a failed delete

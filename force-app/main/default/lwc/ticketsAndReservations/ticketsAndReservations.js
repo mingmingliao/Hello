@@ -1,3 +1,4 @@
+
 import { LightningElement, track, wire, api } from 'lwc';
 import CreateTripModal from 'c/createTripModal';
 import { refreshApex } from '@salesforce/apex';
@@ -6,6 +7,7 @@ import { deleteRecord, getRecordCreateDefaults,
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 import TicketsAndReservationsObject from '@salesforce/schema/TicketOrReservation__c';
+import ticketsAndReservationsModal from 'c/ticketsAndReservationsModal';
 
 export default class TicketsAndReservations extends LightningElement {
     @api tripId;
@@ -98,8 +100,7 @@ export default class TicketsAndReservations extends LightningElement {
     handleDelete() {
         const promises = this.ticketAndReservationSelectedRows.map(ticketAndReservation => {
             deleteRecord(ticketAndReservation.Id)
-        });
-        Promise.all(promises).then(ticketAndReservationList => {
+          Promise.all(promises).then(ticketAndReservationList => {
             console.log(ticketAndReservationList)
             this.dispatchEvent(
                 new ShowToastEvent({
@@ -119,6 +120,19 @@ export default class TicketsAndReservations extends LightningElement {
             }))
             console.log(error)
         })
+    }
+
+    handleClick() {
+        ticketsAndReservationsModal.open({
+          // maps to developer-created `@api options`
+          options: [
+            { id: 1, label: 'Option 1' },
+            { id: 2, label: 'Option 2' },
+          ]
+        }).then((result) => {
+            console.log(result);
+        });
+        
     }
 
     // Updates data table row selection in code
