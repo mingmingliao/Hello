@@ -1,13 +1,11 @@
 <template>
-    <lightning-accordion-section name="checklist" label="Checklist">
-        <lightning-card>
-                <lightning-checkbox-group name="Checkbox Group"
-                                          label="Things to bring on my trip"
-                                          options={options}
-                                          value={value}
-                                          onchange={handleChange}></lightning-checkbox-group>
-                <p>Selected Values are: {selectedValues}</p>
-                <!-- input field to add to checkbox group -->
-        </lightning-card>
-    </lightning-accordion-section>
+    <lightning-card>
+            <lightning-checkbox-group name="Checkbox Group"
+                                        label="Things to bring on my trip"
+                                        options={options}
+                                        value={value}
+                                        onchange={handleChange}></lightning-checkbox-group>
+            <p>Selected Values are: {selectedValues}</p>
+            <!-- input field to add to checkbox group -->
+    </lightning-card>
 </template>
