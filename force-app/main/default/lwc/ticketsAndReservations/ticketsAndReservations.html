@@ -1,26 +1,24 @@
 <template>
-    <lightning-accordion-section name="ticketsAndReservations" label="Tickets and Reservations">
-        <lightning-card>
-            <lightning-datatable
-                key-field="id"
-                data={reservationData}
-                onrowselection={handleRowSelection}
-                columns={columns}>
-            </lightning-datatable>
-            
-            <!-- use inside modal -->
-            <!-- <lightning-record-form object-api-name={ObjectApiName} fields={ContactFieldList} record-id={recordId} onsuccess={contactHandleUpdate}></lightning-record-form> -->
+    <lightning-card>
+        <lightning-datatable
+            key-field="id"
+            data={reservationData}
+            onrowselection={handleRowSelection}
+            columns={columns}>
+        </lightning-datatable>
+        
+        <!-- use inside modal -->
+        <!-- <lightning-record-form object-api-name={ObjectApiName} fields={ContactFieldList} record-id={recordId} onsuccess={contactHandleUpdate}></lightning-record-form> -->
 
-            <lightning-button
-                onclick={handleAdd}
-                aria-haspopup="dialog"
-                label="Add a Reservation (Hard coded vals)">
-            </lightning-button>
-            <lightning-button
-                onclick={handleDelete}
-                aria-haspopup="dialog"
-                label="Remove Selected">
-            </lightning-button>
-        </lightning-card>
-    </lightning-accordion-section>
+        <lightning-button
+            onclick={handleAdd}
+            aria-haspopup="dialog"
+            label="Add a Reservation (Hard coded vals)">
+        </lightning-button>
+        <lightning-button
+            onclick={handleDelete}
+            aria-haspopup="dialog"
+            label="Remove Selected">
+        </lightning-button>
+    </lightning-card>
 </template>

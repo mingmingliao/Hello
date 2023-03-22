@@ -5,19 +5,27 @@
                 <lightning-layout>
                     <lightning-layout-item padding="around-small" size="6">
                         <div class="page-section page-right">
-                                <!-- update map to be centered on focus point of trip -->
-                                <c-travel-app-trip-map></c-travel-app-trip-map>
-                                <!-- add a slider here maybe to edit map size -->
+                            <!-- update map to be centered on focus point of trip -->
+                            <c-travel-app-trip-map></c-travel-app-trip-map>
+                            <!-- add a slider here maybe to edit map size -->
                         </div>
                     </lightning-layout-item>
                     <lightning-layout-item padding="medium" size="6">
                         <div class="page-section page-main">
-                                <lightning-accordion allow-multiple-sections-open>
+                            <lightning-accordion allow-multiple-sections-open>
+                                <lightning-accordion-section name="restaurants" label="Restaurants">
                                     <c-restaurants trip-id={tripId}></c-restaurants>
+                                </lightning-accordion-section>
+                                <lightning-accordion-section name="sights" label="Sights">
                                     <c-sights trip-id={tripId}></c-sights>
+                                </lightning-accordion-section>
+                                <lightning-accordion-section name="ticketsAndReservations" label="Tickets and Reservations">
                                     <c-tickets-and-reservations trip-id={tripId}></c-tickets-and-reservations>
+                                </lightning-accordion-section>
+                                <lightning-accordion-section name="checklist" label="Checklist">
                                     <c-checklist></c-checklist>
-                                </lightning-accordion>    
+                                </lightning-accordion-section>
+                            </lightning-accordion>    
                         </div>
                     </lightning-layout-item>
                 </lightning-layout>
