@@ -36,6 +36,12 @@ export default class Restaurants extends LightningElement {
      * the docs for specific things in salesforce is very scarce
      * this will get rerun when you use refreshData(this.wiredRestaurantData)
      * 
+     * how did i get relatedListId?
+     * DescribeSObjectResult describe = SObjectType.Travel_Plan__c;
+     * for (ChildRelationship relation: describe.getChildRelationships()) {
+     *     system.debug(relation);
+     * }
+     * run this in dev console and you can find the relatedListName field to put in
      * TODO - Fields here should be moved into a global const where it can be reused and edited easily, kind of messy over here IMO
      **/
     @wire(getRelatedListRecords, {

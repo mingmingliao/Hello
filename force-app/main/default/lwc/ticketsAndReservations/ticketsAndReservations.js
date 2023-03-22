@@ -31,7 +31,7 @@ export default class TicketsAndReservations extends LightningElement {
 
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
-        relatedListId: 'TicketOrReservations__r',
+        relatedListId: 'Tickets_and_Reservations__r',
         fields : ["TicketOrReservation__c.Id", "TicketOrReservation__c.Name",
          "TicketOrReservation__c.Location__Longitude__s", "TicketOrReservation__c.Location__Latitude__s"]
     })
