@@ -10,6 +10,7 @@ import restaurantModal from 'c/restaurantModal';
 
 export default class Restaurants extends LightningElement {
     @api tripId;
+    // track is deprecated
     @track restaurantData;
     @track wiredRestaurantData;
     @track error;
@@ -41,17 +42,26 @@ export default class Restaurants extends LightningElement {
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
         relatedListId: 'Restaurants__r',
-        fields : ["Restaurant__c.Id", "Restaurant__c.Name", "Restaurant__c.Location__Longitude__s", "Restaurant__c.Location__Latitude__s"]
+        fields : ["Restaurant__c.Id", "Restaurant__c.Name", "Restaurant__c.Location__Longitude__s", 
+        "Restaurant__c.Location__Latitude__s", "Restaurant__c.Address__c"]
     })
     wiredData(response) {
         this.wiredRestaurantData = response;
+        const mockAddress = {
+            'street' : "57-12 138th Street",
+            'city' : "Flushing",
+            'postal' : "11355",
+            'state' : "New York",
+            'country' : "United States of America"
+        }
         if (response.data) {
             let retrievedData = response.data.records.map(restaurantRecord => {
             return {
-            Id: restaurantRecord.fields.Id.value,
-            Name: restaurantRecord.fields.Name.value,
-            Location__Longitude__s: restaurantRecord.fields.Location__Longitude__s.value,
-            Location__Latitude__s: restaurantRecord.fields.Location__Latitude__s.value,
+                Id: restaurantRecord.fields.Id.value,
+                Name: restaurantRecord.fields.Name.value,
+                Location__Longitude__s: restaurantRecord.fields.Location__Longitude__s.value,
+                Location__Latitude__s: restaurantRecord.fields.Location__Latitude__s.value,
+                Address: mockAddress
             }
             })
             this.restaurantData = retrievedData
