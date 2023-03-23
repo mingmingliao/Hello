@@ -16,4 +16,6 @@ public with sharing class RestaurantsController {
     public static void updateRestaurants(List<Restaurant__c> restaurants) {
 
     }
+
+    
 }
