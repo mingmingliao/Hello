@@ -1,5 +1,4 @@
 import { LightningElement, track, wire, api } from 'lwc';
-import CreateTripModal from 'c/createTripModal';
 import { refreshApex } from '@salesforce/apex';
 import { deleteRecord, getRecordCreateDefaults, 
     generateRecordInputForCreate, createRecord } from 'lightning/uiRecordApi';
@@ -56,13 +55,13 @@ export default class Restaurants extends LightningElement {
         }
         if (response.data) {
             let retrievedData = response.data.records.map(restaurantRecord => {
-            return {
-                Id: restaurantRecord.fields.Id.value,
-                Name: restaurantRecord.fields.Name.value,
-                Location__Longitude__s: restaurantRecord.fields.Location__Longitude__s.value,
-                Location__Latitude__s: restaurantRecord.fields.Location__Latitude__s.value,
-                Address: mockAddress
-            }
+                return {
+                    Id: restaurantRecord.fields.Id.value,
+                    Name: restaurantRecord.fields.Name.value,
+                    Location__Longitude__s: restaurantRecord.fields.Location__Longitude__s.value,
+                    Location__Latitude__s: restaurantRecord.fields.Location__Latitude__s.value,
+                    Address: mockAddress
+                }
             })
             this.restaurantData = retrievedData
             this.error = undefined;
@@ -92,7 +91,7 @@ export default class Restaurants extends LightningElement {
     
     // test function that adds a record, hopefully refreshes
     // dont use mockRecordInput here
-    addR() {
+    handleAdd() {
         this.recordInput = this.recordInputForCreate();
         this.recordInput.fields.Name = "Add Test"
         this.recordInput.fields.Location__Latitude__s = 12.1
