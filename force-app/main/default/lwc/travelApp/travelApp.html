@@ -9,7 +9,7 @@
 
         <lightning-tabset>
             <template for:each={trips} for:item="trip">
-                <div key={trip.id}>
+                <div key={trip.Id}>
                     <lightning-tab label={trip.Name}>
                         <!-- todo send in data from item here -->
                         <c-travel-app-trip trip-id={trip.Id}></c-travel-app-trip>

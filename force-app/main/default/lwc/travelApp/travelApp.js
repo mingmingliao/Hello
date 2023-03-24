@@ -7,6 +7,7 @@ export default class Travel_app extends LightningElement {
     @track trips;
     @track error;
 
+    // change this to use result rather than {error, data}, will cause problems later when we update wired shit
     @wire(getTravelTrips) 
     wiredTrips({error, data}) {
       if (data) {

@@ -3,7 +3,10 @@
     <lightning-modal-body>
         <div class="slds-m-top_small slds-m-bottom_small">
             <div>
-                <lightning-input type="text" label="Name of Event"></lightning-input>
+                <lightning-input type="text" 
+                                 label="Name of Event"
+                                 onchange={handleInputChange}>
+                </lightning-input>
             </div>
         </div>
             <lightning-input-address
@@ -19,7 +22,8 @@
                 province=""
                 postal-code=""
                 required
-                field-level-help="Help Text for inputAddress field" >
+                onchange={handleInputChange}
+                field-level-help="Help Text for inputAddress field">
             </lightning-input-address>
         <template for:each={options} for:item="option">
             <lightning-button
