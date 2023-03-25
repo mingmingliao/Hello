@@ -15,9 +15,7 @@ export default class Sights extends LightningElement {
     @track error;
     // need to change these fields later
     @track columns = [
-        { label: 'Name', fieldName: 'Name' },
-        { label: 'Longitude', fieldName: 'Location__Longitude__s', type: 'double' },
-        { label: 'Latitude', fieldName: 'Location__Latitude__s', type: 'double' }
+        { label: 'Name', fieldName: 'Name' }
     ];
 
     // Used for deletion of rows
@@ -31,17 +29,15 @@ export default class Sights extends LightningElement {
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
         relatedListId: 'Sights__r',
-        fields : ["Sight__c.Id", "Sight__c.Name", "Sight__c.Location__Longitude__s", "Sight__c.Location__Latitude__s"]
+        fields : ["Sight__c.Id", "Sight__c.Name"]
     })
     wiredData(response) {
         this.wiredSightData = response;
         if (response.data) {
             let retrievedData = response.data.records.map(sightRecord => {
             return {
-            Id: sightRecord.fields.Id.value,
-            Name: sightRecord.fields.Name.value,
-            Location__Longitude__s: sightRecord.fields.Location__Longitude__s.value,
-            Location__Latitude__s: sightRecord.fields.Location__Latitude__s.value,
+                Id: sightRecord.fields.Id.value,
+                Name: sightRecord.fields.Name.value
             }
             })
             this.sightData = retrievedData
@@ -73,8 +69,6 @@ export default class Sights extends LightningElement {
     handleAdd() {
         this.recordInput = this.recordInputForCreate();
         this.recordInput.fields.Name = "Add Test"
-        this.recordInput.fields.Location__Latitude__s = 12.1
-        this.recordInput.fields.Location__Longitude__s = 21.2
         this.recordInput.fields.Travel_Plan__c = this.tripId
 
         createRecord(this.recordInput)

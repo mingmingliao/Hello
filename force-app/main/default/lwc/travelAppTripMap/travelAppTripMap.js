@@ -19,7 +19,7 @@ export default class TravelAppTripMap extends LightningElement {
     zoomLevel = 11
     center = {
         location: {
-            State: 'San Francisco'
+            City: 'San Francisco'
         }
     }
 

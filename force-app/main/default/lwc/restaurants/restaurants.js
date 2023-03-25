@@ -6,6 +6,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 import RESTAURANT_OBJECT from '@salesforce/schema/Restaurant__c';
 import restaurantModal from 'c/restaurantModal';
+import ADDRESS_FIELD from '@salesforce/schema/Restaurant__c.Address__c'
 
 export default class Restaurants extends LightningElement {
     @api tripId;
@@ -15,9 +16,7 @@ export default class Restaurants extends LightningElement {
     @track error;
     // need to change these fields later
     @track columns = [
-        { label: 'Name', fieldName: 'Name' },
-        { label: 'Longitude', fieldName: 'Location__Longitude__s', type: 'double' },
-        { label: 'Latitude', fieldName: 'Location__Latitude__s', type: 'double' }
+        { label: 'Name', fieldName: 'Name' }
     ];
 
     // Used for deletion of rows
@@ -47,26 +46,19 @@ export default class Restaurants extends LightningElement {
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
         relatedListId: 'Restaurants__r',
-        fields : ["Restaurant__c.Id", "Restaurant__c.Name", "Restaurant__c.Location__Longitude__s", 
-        "Restaurant__c.Location__Latitude__s", "Restaurant__c.Address__c"]
+        fields : ["Restaurant__c.Id", "Restaurant__c.Name", "Restaurant__c.Address__c"]
     })
     wiredData(response) {
         this.wiredRestaurantData = response;
         const mockAddress = {
-            'street' : "57-12 138th Street",
-            'city' : "Flushing",
-            'postal' : "11355",
-            'state' : "New York",
-            'country' : "United States of America"
+            city: 'San Francisco'
         }
         if (response.data) {
             let retrievedData = response.data.records.map(restaurantRecord => {
                 return {
                     Id: restaurantRecord.fields.Id.value,
                     Name: restaurantRecord.fields.Name.value,
-                    Location__Longitude__s: restaurantRecord.fields.Location__Longitude__s.value,
-                    Location__Latitude__s: restaurantRecord.fields.Location__Latitude__s.value,
-                    Address: mockAddress
+                    Address__c: mockAddress
                 }
             })
             this.restaurantData = retrievedData
@@ -99,10 +91,15 @@ export default class Restaurants extends LightningElement {
     // dont use mockRecordInput here
     handleAdd() {
         this.recordInput = this.recordInputForCreate();
+        console.log(this.recordInput)
         this.recordInput.fields.Name = "Add Test"
-        this.recordInput.fields.Location__Latitude__s = 12.1
-        this.recordInput.fields.Location__Longitude__s = 21.2
         this.recordInput.fields.Travel_Plan__c = this.tripId
+        this.recordInput.fields.Address__City__s = "San Francisco"
+        this.recordInput.fields.Address__CountryCode__s = "US"
+        this.recordInput.fields.Address__PostalCode__s = "94105"
+        this.recordInput.fields.Address__Street__s = "121 Spear St."
+        this.recordInput.fields.Address__StateCode__s = "CA"
+
 
         createRecord(this.recordInput)
         .then(record => {
@@ -115,6 +112,8 @@ export default class Restaurants extends LightningElement {
             );
             return refreshApex(this.wiredRestaurantData)
         }).catch(error => {
+            console.log(ADDRESS_FIELD)
+            console.log(error)
             console.log("add error lol")
         })
     }
@@ -122,6 +121,7 @@ export default class Restaurants extends LightningElement {
     handleClick() {
         restaurantModal.open({
           // maps to developer-created `@api options`
+          tripId: this.tripId,
           options: [
             { id: 1, label: 'Option 1' },
             { id: 2, label: 'Option 2' },

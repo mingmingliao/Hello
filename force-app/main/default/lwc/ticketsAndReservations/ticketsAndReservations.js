@@ -16,9 +16,7 @@ export default class TicketsAndReservations extends LightningElement {
     @track error;
     // need to change these fields later
     @track columns = [
-        { label: 'Name', fieldName: 'Name' },
-        { label: 'Longitude', fieldName: 'Location__Longitude__s', type: 'double' },
-        { label: 'Latitude', fieldName: 'Location__Latitude__s', type: 'double' }
+        { label: 'Name', fieldName: 'Name' }
     ];
 
     // Used for deletion of rows
@@ -32,8 +30,7 @@ export default class TicketsAndReservations extends LightningElement {
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
         relatedListId: 'Tickets_and_Reservations__r',
-        fields : ["TicketOrReservation__c.Id", "TicketOrReservation__c.Name",
-         "TicketOrReservation__c.Location__Longitude__s", "TicketOrReservation__c.Location__Latitude__s"]
+        fields : ["TicketOrReservation__c.Id", "TicketOrReservation__c.Name"]
     })
     wiredData(response) {
         this.wiredTicketAndReservationData = response;
@@ -41,9 +38,7 @@ export default class TicketsAndReservations extends LightningElement {
             let retrievedData = response.data.records.map(ticketAndReservationRecord => {
             return {
                 Id: ticketAndReservationRecord.fields.Id.value,
-                Name: ticketAndReservationRecord.fields.Name.value,
-                Location__Longitude__s: ticketAndReservationRecord.fields.Location__Longitude__s.value,
-                Location__Latitude__s: ticketAndReservationRecord.fields.Location__Latitude__s.value,
+                Name: ticketAndReservationRecord.fields.Name.value
             }
             })
             this.ticketAndReservationData = retrievedData
@@ -76,8 +71,6 @@ export default class TicketsAndReservations extends LightningElement {
     handleAdd() {
         this.recordInput = this.recordInputForCreate();
         this.recordInput.fields.Name = "Add Test"
-        this.recordInput.fields.Location__Latitude__s = 12.1
-        this.recordInput.fields.Location__Longitude__s = 21.2
         this.recordInput.fields.Travel_Plan__c = this.tripId
 
         createRecord(this.recordInput)
