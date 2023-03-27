@@ -1,6 +1,5 @@
 
-import { LightningElement, track, wire, api } from 'lwc';
-import CreateTripModal from 'c/createTripModal';
+import { LightningElement, wire, api } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
 import { deleteRecord, getRecordCreateDefaults, 
     generateRecordInputForCreate, createRecord } from 'lightning/uiRecordApi';
@@ -11,12 +10,13 @@ import ticketsAndReservationsModal from 'c/ticketsAndReservationsModal';
 
 export default class TicketsAndReservations extends LightningElement {
     @api tripId;
-    @track ticketAndReservationData;
-    @track wiredTicketAndReservationData;
-    @track error;
-    // need to change these fields later
-    @track columns = [
-        { label: 'Name', fieldName: 'Name' }
+    ticketAndReservationData;
+    wiredTicketAndReservationData;
+    error;
+
+    columns = [
+        { label: 'Name', fieldName: 'Name' },
+        { label: 'Description', fieldName: 'Description__c' }
     ];
 
     // Used for deletion of rows
@@ -30,7 +30,7 @@ export default class TicketsAndReservations extends LightningElement {
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
         relatedListId: 'Tickets_and_Reservations__r',
-        fields : ["TicketOrReservation__c.Id", "TicketOrReservation__c.Name"]
+        fields : ["TicketOrReservation__c.Id", "TicketOrReservation__c.Name", "TicketOrReservation__c.Description__c"]
     })
     wiredData(response) {
         this.wiredTicketAndReservationData = response;
@@ -38,7 +38,8 @@ export default class TicketsAndReservations extends LightningElement {
             let retrievedData = response.data.records.map(ticketAndReservationRecord => {
             return {
                 Id: ticketAndReservationRecord.fields.Id.value,
-                Name: ticketAndReservationRecord.fields.Name.value
+                Name: ticketAndReservationRecord.fields.Name.value,
+                Description__c: ticketAndReservationRecord.fields.Description__c.value
             }
             })
             this.ticketAndReservationData = retrievedData
@@ -118,24 +119,16 @@ export default class TicketsAndReservations extends LightningElement {
 
     handleClick() {
         ticketsAndReservationsModal.open({
-          // maps to developer-created `@api options`
-          options: [
-            { id: 1, label: 'Option 1' },
-            { id: 2, label: 'Option 2' },
-          ]
+            // maps to developer-created `@api options`
+            tripId: this.tripId
         }).then((result) => {
             console.log(result);
+            return refreshApex(this.wiredRestaurantData)
         });
-        
     }
 
     // Updates data table row selection in code
     handleRowSelection(event){
         this.ticketAndReservationSelectedRows = event.detail.selectedRows
     }
-
-    handleClick() {
-        // open a modal with a record creation form
-    }
-
 }

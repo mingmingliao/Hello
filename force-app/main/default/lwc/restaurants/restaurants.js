@@ -11,7 +11,7 @@ export default class Restaurants extends LightningElement {
     restaurantData;
     wiredRestaurantData;
     error;
-    // need to change these fields later
+    
     columns = [
         { label: 'Name', fieldName: 'Name' },
         { label: 'Description', fieldName: 'Description__c' }

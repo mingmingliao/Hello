@@ -6,14 +6,10 @@
             onrowselection={handleRowSelection}
             columns={columns}>
         </lightning-datatable>
-        
-        <!-- use inside modal -->
-        <!-- <lightning-record-form object-api-name={ObjectApiName} fields={ContactFieldList} record-id={recordId} onsuccess={contactHandleUpdate}></lightning-record-form> -->
-
         <lightning-button
-            onclick={handleAdd}
+            onclick={handleClick}
             aria-haspopup="dialog"
-            label="Add a Sight (Hard coded vals)">
+            label="Add a New Restaurant">
         </lightning-button>
         <lightning-button
             onclick={handleDelete}

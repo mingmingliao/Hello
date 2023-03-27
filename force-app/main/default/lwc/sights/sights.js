@@ -10,12 +10,13 @@ import sightsModal from 'c/sightsModal';
 
 export default class Sights extends LightningElement {
     @api tripId;
-    @track sightData;
-    @track wiredSightData;
-    @track error;
-    // need to change these fields later
-    @track columns = [
-        { label: 'Name', fieldName: 'Name' }
+    sightData;
+    wiredSightData;
+    error;
+    
+    columns = [
+        { label: 'Name', fieldName: 'Name' },
+        { label: 'Description', fieldName: 'Description__c' }
     ];
 
     // Used for deletion of rows
@@ -29,7 +30,7 @@ export default class Sights extends LightningElement {
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
         relatedListId: 'Sights__r',
-        fields : ["Sight__c.Id", "Sight__c.Name"]
+        fields : ["Sight__c.Id", "Sight__c.Name", "Sight__c.Description__c"]
     })
     wiredData(response) {
         this.wiredSightData = response;
@@ -37,7 +38,8 @@ export default class Sights extends LightningElement {
             let retrievedData = response.data.records.map(sightRecord => {
             return {
                 Id: sightRecord.fields.Id.value,
-                Name: sightRecord.fields.Name.value
+                Name: sightRecord.fields.Name.value,
+                Description__c: sightRecord.fields.Description__c.value
             }
             })
             this.sightData = retrievedData
@@ -116,14 +118,12 @@ export default class Sights extends LightningElement {
 
     handleClick() {
         sightsModal.open({
-          // maps to developer-created `@api options`
-          options: [
-            { id: 1, label: 'Option 1' },
-            { id: 2, label: 'Option 2' },
-          ]
+            // maps to developer-created `@api options`
+            tripId: this.tripId
         }).then((result) => {
             console.log(result);
-        })
+            return refreshApex(this.wiredRestaurantData)
+        });
     }
 
 
