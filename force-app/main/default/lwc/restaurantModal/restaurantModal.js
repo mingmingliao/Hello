@@ -20,7 +20,6 @@ export default class restaurantModal extends LightningModal {
         { fieldApiName: 'Address__StateCode__s', objectApiName: 'Restaurant__c' },
         { fieldApiName: 'Address__PostalCode__s', objectApiName: 'Restaurant__c' }
     ];
-    
 
     handleError() {
     }
