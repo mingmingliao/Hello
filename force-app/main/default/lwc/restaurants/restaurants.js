@@ -71,7 +71,6 @@ export default class Restaurants extends LightningElement {
           // maps to developer-created `@api options`
           tripId: this.tripId
         }).then((result) => {
-            console.log(result);
             return refreshApex(this.wiredRestaurantData)
         });
     }
@@ -90,7 +89,6 @@ export default class Restaurants extends LightningElement {
                 deleteRecord(restaurant.Id)
             });
             Promise.all(promises).then(restaurantList => {
-                console.log(restaurantList)
                 this.dispatchEvent(
                     new ShowToastEvent({
                     title: 'Success',
@@ -107,7 +105,6 @@ export default class Restaurants extends LightningElement {
                     message: 'Failed to delete restaurant!',
                     variant: 'error'
                 }))
-                console.log(error)
             })
         }
     }

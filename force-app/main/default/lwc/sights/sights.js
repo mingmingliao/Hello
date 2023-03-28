@@ -24,8 +24,6 @@ export default class Sights extends LightningElement {
 
     // Used for creation of record
     recordInput;
-    @wire(getRecordCreateDefaults, { objectApiName: SIGHT_OBJECT })
-    sightCreateDefaults;
 
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
@@ -49,45 +47,6 @@ export default class Sights extends LightningElement {
             this.sightData = [];
         }
     };
-
-
-    recordInputForCreate() {
-        if (!this.sightCreateDefaults.data) {
-            return undefined;
-        }
-
-        const sightObjectInfo =
-            this.sightCreateDefaults.data.objectInfos[
-              SIGHT_OBJECT.objectApiName
-            ];
-        const recordDefaults = this.sightCreateDefaults.data.record;
-        const recordInput = generateRecordInputForCreate(
-            recordDefaults,
-            sightObjectInfo
-        );
-        return recordInput;
-    }
-    
-    handleAdd() {
-        this.recordInput = this.recordInputForCreate();
-        this.recordInput.fields.Name = "Add Test"
-        this.recordInput.fields.Travel_Plan__c = this.tripId
-
-        createRecord(this.recordInput)
-        .then(record => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                title: 'Success',
-                message: 'Record created',
-                variant: 'success'
-            })
-            );
-            return refreshApex(this.wiredSightData)
-        }).catch(error => {
-            console.log(error)
-            console.log("add error lol")
-        })
-    }
     
     handleDelete() {
         const promises = this.sightSelectedRows.map(sight => {
@@ -95,7 +54,6 @@ export default class Sights extends LightningElement {
             
         });
         Promise.all(promises).then(sightList => {
-            console.log(sightList)
             this.dispatchEvent(
                 new ShowToastEvent({
                 title: 'Success',
@@ -112,7 +70,6 @@ export default class Sights extends LightningElement {
                 message: 'Failed to add sight!',
                 variant: 'error'
             }))
-            console.log(error)
         })
     }
 
@@ -121,7 +78,6 @@ export default class Sights extends LightningElement {
             // maps to developer-created `@api options`
             tripId: this.tripId
         }).then((result) => {
-            console.log(result);
             return refreshApex(this.wiredRestaurantData)
         });
     }
