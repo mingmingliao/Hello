@@ -1,7 +1,7 @@
 <template>
     <lightning-modal-header label="Add a New Sight"></lightning-modal-header>
     <lightning-modal-body>
-        <div class="slds-m-top_small slds-m-bottom_small">
+        <!-- <div class="slds-m-top_small slds-m-bottom_small">
             <div>
                 <lightning-input type="text" label="Name"></lightning-input>
             </div>
@@ -20,7 +20,12 @@
                 postal-code=""
                 required
                 field-level-help="Help Text for inputAddress field" >
-            </lightning-input-address>
+            </lightning-input-address> -->
+            <lightning-record-form
+                object-api-name={objectApiName}
+                fields={fields}
+                onsuccess={handleSuccess}>
+            </lightning-record-form>
         <template for:each={options} for:item="option">
             <lightning-button
               onclick={handleOptionClick}
