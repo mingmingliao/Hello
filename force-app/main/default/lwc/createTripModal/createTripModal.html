@@ -2,6 +2,13 @@
     <lightning-modal-header label="Create New Trip"></lightning-modal-header>
     <lightning-modal-body>
         
+        <lightning-record-form
+            object-api-name={objectApiName}
+            fields={fields}
+            onsubmit={handleSubmit}
+            onerror={handleError}
+            onsuccess={handleSuccess}>
+        </lightning-record-form>
         <template for:each={options} for:item="option">
             <lightning-button
               onclick={handleOptionClick}
