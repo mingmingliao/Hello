@@ -2,9 +2,9 @@ import { api } from 'lwc';
 import LightningModal from 'lightning/modal';
 
 export default class CreateTripModal extends LightningModal {
-    @api content;
+    @api options
 
-    handleOkay() {
+    handleOptionClick() {
         this.close('okay');
     }
 }

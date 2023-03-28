@@ -2,8 +2,7 @@
     <lightning-layout multiple-rows="true">
         <lightning-layout-item padding="around-small" size="6">
             <div class="page-section page-right">
-                <!-- update map to be centered on focus point of trip -->
-                <c-travel-app-trip-map></c-travel-app-trip-map>
+                <c-travel-app-trip-map trip-id={tripId}></c-travel-app-trip-map>
                 <!-- add a slider here maybe to edit map size -->
             </div>
         </lightning-layout-item>
