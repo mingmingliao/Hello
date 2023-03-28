@@ -20,7 +20,6 @@ export default class restaurantModal extends LightningModal {
         { fieldApiName: 'Address__StateCode__s', objectApiName: 'Restaurant__c' },
         { fieldApiName: 'Address__PostalCode__s', objectApiName: 'Restaurant__c' }
     ];
-    
 
     handleError() {
     }
@@ -29,10 +28,8 @@ export default class restaurantModal extends LightningModal {
     // Right now will still submit if fields are empty... 
     // for demo purposes we can leave it like this
     handleSubmit(event) {
-        console.log(event.detail.fields)
         event.preventDefault();
         const formFields = event.detail.fields;
-        console.log(formFields)
         // Setting up relationship Id
         formFields["Travel_Plan__c"] = this.tripId;
         this.template.querySelector('lightning-record-form').submit(formFields);

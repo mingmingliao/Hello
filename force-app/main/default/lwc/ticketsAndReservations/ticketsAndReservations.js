@@ -24,8 +24,6 @@ export default class TicketsAndReservations extends LightningElement {
 
     // Used for creation of record
     recordInput;
-    @wire(getRecordCreateDefaults, { objectApiName: TicketsAndReservationsObject })
-    ticketAndReservationCreateDefaults;
 
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
@@ -50,47 +48,6 @@ export default class TicketsAndReservations extends LightningElement {
         }
     };
 
-
-    recordInputForCreate() {
-        if (!this.ticketAndReservationCreateDefaults.data) {
-            return undefined;
-        }
-
-        const ticketAndReservationObjectInfo =
-            this.ticketAndReservationCreateDefaults.data.objectInfos[
-                TicketsAndReservationsObject.objectApiName
-            ];
-        const recordDefaults = this.ticketAndReservationCreateDefaults.data.record;
-        const recordInput = generateRecordInputForCreate(
-            recordDefaults,
-            ticketAndReservationObjectInfo
-        );
-        return recordInput;
-    }
-    
-    // doesnt work because we dont have a related list object yet so gg
-    handleAdd() {
-        this.recordInput = this.recordInputForCreate();
-        this.recordInput.fields.Name = "Add Test"
-        this.recordInput.fields.Travel_Plan__c = this.tripId
-
-        createRecord(this.recordInput)
-        .then(record => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                title: 'Success',
-                message: 'Record created',
-                variant: 'success'
-            })
-            );
-            console.log(record)
-            return refreshApex(this.wiredTicketAndReservationData)
-        }).catch(error => {
-            console.log(error)
-            console.log("add error lol")
-        })
-    }
-    
     handleDelete() {
         const promises = this.ticketAndReservationSelectedRows.map(ticketAndReservation => {
             deleteRecord(ticketAndReservation.Id)
@@ -122,7 +79,6 @@ export default class TicketsAndReservations extends LightningElement {
             // maps to developer-created `@api options`
             tripId: this.tripId
         }).then((result) => {
-            console.log(result);
             return refreshApex(this.wiredRestaurantData)
         });
     }

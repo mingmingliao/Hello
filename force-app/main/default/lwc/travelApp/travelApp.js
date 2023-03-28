@@ -13,7 +13,6 @@ export default class Travel_app extends LightningElement {
     @wire(getTravelTrips) 
     wiredTripsResult(result) {
         this.wiredTrip = result;
-        console.log(result);
         if (result.data) {
             this.trips = result.data;
             this.error = undefined;
@@ -30,7 +29,6 @@ export default class Travel_app extends LightningElement {
           // maps to developer-created `@api options`
           options: [{id:1, label:'what'}]
         }).then((result) => {
-            console.log(result);
             return refreshApex(this.wiredTrips)
         });
     }
