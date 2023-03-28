@@ -2,28 +2,19 @@
     <lightning-card>
         <lightning-datatable
             key-field="id"
-            data={reservationData}
+            data={ticketAndReservationData}
             onrowselection={handleRowSelection}
             columns={columns}>
         </lightning-datatable>
-        
-        <!-- use inside modal -->
-        <!-- <lightning-record-form object-api-name={ObjectApiName} fields={ContactFieldList} record-id={recordId} onsuccess={contactHandleUpdate}></lightning-record-form> -->
-
         <lightning-button
-            onclick={handleAdd}
+            onclick={handleClick}
             aria-haspopup="dialog"
-            label="Add a Reservation (Hard coded vals)">
+            label="Add a New Restaurant">
         </lightning-button>
         <lightning-button
             onclick={handleDelete}
             aria-haspopup="dialog"
             label="Remove Selected">
-        </lightning-button>
-        <lightning-button
-            onclick={handleClick}
-            aria-haspopup="dialog"
-            label="Add a New Event">
         </lightning-button>
     </lightning-card>
 </template>

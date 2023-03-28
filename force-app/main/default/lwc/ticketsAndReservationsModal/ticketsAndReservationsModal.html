@@ -1,38 +1,12 @@
 <template>
     <lightning-modal-header label="Add a New Ticket or Reservation"></lightning-modal-header>
     <lightning-modal-body>
-        <div class="slds-m-top_small slds-m-bottom_small">
-            <div>
-                <lightning-input type="text" 
-                                 label="Name of Event"
-                                 onchange={handleInputChange}>
-                </lightning-input>
-            </div>
-        </div>
-            <lightning-input-address
-                address-label="Address"
-                street-label="Street"
-                city-label="City"
-                country-label="Country"
-                province-label="Province"
-                postal-code-label="Postal Code"
-                street=""
-                city=""
-                country=""
-                province=""
-                postal-code=""
-                required
-                onchange={handleInputChange}
-                field-level-help="Help Text for inputAddress field">
-            </lightning-input-address>
-        <template for:each={options} for:item="option">
-            <lightning-button
-              onclick={handleOptionClick}
-              data-id={option.id}
-              key={option.id}
-            >
-                {option.label}
-            </lightning-button>
-        </template>
+        <lightning-record-form
+            object-api-name={objectApiName}
+            fields={fields}
+            onsubmit={handleSubmit}
+            onerror={handleError}
+            onsuccess={handleSuccess}>
+        </lightning-record-form>
     </lightning-modal-body>
 </template>

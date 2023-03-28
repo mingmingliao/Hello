@@ -1,6 +1,5 @@
 
-import { LightningElement, track, wire, api } from 'lwc';
-import CreateTripModal from 'c/createTripModal';
+import { LightningElement, wire, api } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
 import { deleteRecord, getRecordCreateDefaults, 
     generateRecordInputForCreate, createRecord } from 'lightning/uiRecordApi';
@@ -11,14 +10,13 @@ import ticketsAndReservationsModal from 'c/ticketsAndReservationsModal';
 
 export default class TicketsAndReservations extends LightningElement {
     @api tripId;
-    @track ticketAndReservationData;
-    @track wiredTicketAndReservationData;
-    @track error;
-    // need to change these fields later
-    @track columns = [
+    ticketAndReservationData;
+    wiredTicketAndReservationData;
+    error;
+
+    columns = [
         { label: 'Name', fieldName: 'Name' },
-        { label: 'Longitude', fieldName: 'Location__Longitude__s', type: 'double' },
-        { label: 'Latitude', fieldName: 'Location__Latitude__s', type: 'double' }
+        { label: 'Description', fieldName: 'Description__c' }
     ];
 
     // Used for deletion of rows
@@ -26,14 +24,11 @@ export default class TicketsAndReservations extends LightningElement {
 
     // Used for creation of record
     recordInput;
-    @wire(getRecordCreateDefaults, { objectApiName: TicketsAndReservationsObject })
-    ticketAndReservationCreateDefaults;
 
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
-        relatedListId: 'TicketOrReservations__r',
-        fields : ["TicketOrReservation__c.Id", "TicketOrReservation__c.Name",
-         "TicketOrReservation__c.Location__Longitude__s", "TicketOrReservation__c.Location__Latitude__s"]
+        relatedListId: 'Tickets_and_Reservations__r',
+        fields : ["TicketOrReservation__c.Id", "TicketOrReservation__c.Name", "TicketOrReservation__c.Description__c"]
     })
     wiredData(response) {
         this.wiredTicketAndReservationData = response;
@@ -42,8 +37,7 @@ export default class TicketsAndReservations extends LightningElement {
             return {
                 Id: ticketAndReservationRecord.fields.Id.value,
                 Name: ticketAndReservationRecord.fields.Name.value,
-                Location__Longitude__s: ticketAndReservationRecord.fields.Location__Longitude__s.value,
-                Location__Latitude__s: ticketAndReservationRecord.fields.Location__Latitude__s.value,
+                Description__c: ticketAndReservationRecord.fields.Description__c.value
             }
             })
             this.ticketAndReservationData = retrievedData
@@ -54,49 +48,6 @@ export default class TicketsAndReservations extends LightningElement {
         }
     };
 
-
-    recordInputForCreate() {
-        if (!this.ticketAndReservationCreateDefaults.data) {
-            return undefined;
-        }
-
-        const ticketAndReservationObjectInfo =
-            this.ticketAndReservationCreateDefaults.data.objectInfos[
-                TicketsAndReservationsObject.objectApiName
-            ];
-        const recordDefaults = this.ticketAndReservationCreateDefaults.data.record;
-        const recordInput = generateRecordInputForCreate(
-            recordDefaults,
-            ticketAndReservationObjectInfo
-        );
-        return recordInput;
-    }
-    
-    // doesnt work because we dont have a related list object yet so gg
-    handleAdd() {
-        this.recordInput = this.recordInputForCreate();
-        this.recordInput.fields.Name = "Add Test"
-        this.recordInput.fields.Location__Latitude__s = 12.1
-        this.recordInput.fields.Location__Longitude__s = 21.2
-        this.recordInput.fields.Travel_Plan__c = this.tripId
-
-        createRecord(this.recordInput)
-        .then(record => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                title: 'Success',
-                message: 'Record created',
-                variant: 'success'
-            })
-            );
-            console.log(record)
-            return refreshApex(this.wiredTicketAndReservationData)
-        }).catch(error => {
-            console.log(error)
-            console.log("add error lol")
-        })
-    }
-    
     handleDelete() {
         const promises = this.ticketAndReservationSelectedRows.map(ticketAndReservation => {
             deleteRecord(ticketAndReservation.Id)
@@ -125,24 +76,15 @@ export default class TicketsAndReservations extends LightningElement {
 
     handleClick() {
         ticketsAndReservationsModal.open({
-          // maps to developer-created `@api options`
-          options: [
-            { id: 1, label: 'Option 1' },
-            { id: 2, label: 'Option 2' },
-          ]
+            // maps to developer-created `@api options`
+            tripId: this.tripId
         }).then((result) => {
-            console.log(result);
+            return refreshApex(this.wiredRestaurantData)
         });
-        
     }
 
     // Updates data table row selection in code
     handleRowSelection(event){
         this.ticketAndReservationSelectedRows = event.detail.selectedRows
     }
-
-    handleClick() {
-        // open a modal with a record creation form
-    }
-
 }

@@ -1,23 +1,20 @@
-import { LightningElement, track, wire, api } from 'lwc';
+import { LightningElement, wire, api } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
-import { deleteRecord, getRecordCreateDefaults, 
-    generateRecordInputForCreate, createRecord } from 'lightning/uiRecordApi';
+import { deleteRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
-import RESTAURANT_OBJECT from '@salesforce/schema/Restaurant__c';
 import restaurantModal from 'c/restaurantModal';
 
 export default class Restaurants extends LightningElement {
     @api tripId;
     // track is deprecated
-    @track restaurantData;
-    @track wiredRestaurantData;
-    @track error;
-    // need to change these fields later
-    @track columns = [
+    restaurantData;
+    wiredRestaurantData;
+    error;
+    
+    columns = [
         { label: 'Name', fieldName: 'Name' },
-        { label: 'Longitude', fieldName: 'Location__Longitude__s', type: 'double' },
-        { label: 'Latitude', fieldName: 'Location__Latitude__s', type: 'double' }
+        { label: 'Description', fieldName: 'Description__c' }
     ];
 
     // Used for deletion of rows
@@ -25,8 +22,6 @@ export default class Restaurants extends LightningElement {
 
     // Used for creation of record
     recordInput;
-    @wire(getRecordCreateDefaults, { objectApiName: RESTAURANT_OBJECT })
-    restaurantCreateDefaults;
 
     /** 
      * notes to use wire because it was really annoying for me
@@ -36,31 +31,31 @@ export default class Restaurants extends LightningElement {
      * the docs for specific things in salesforce is very scarce
      * this will get rerun when you use refreshData(this.wiredRestaurantData)
      * 
+     * how did i get relatedListId?
+     * DescribeSObjectResult describe = SObjectType.Travel_Plan__c;
+     * for (ChildRelationship relation: describe.getChildRelationships()) {
+     *     system.debug(relation);
+     * }
+     * run this in dev console and you can find the relatedListName field to put in
      * TODO - Fields here should be moved into a global const where it can be reused and edited easily, kind of messy over here IMO
      **/
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
         relatedListId: 'Restaurants__r',
-        fields : ["Restaurant__c.Id", "Restaurant__c.Name", "Restaurant__c.Location__Longitude__s", 
-        "Restaurant__c.Location__Latitude__s", "Restaurant__c.Address__c"]
+        fields : ["Restaurant__c.Id", "Restaurant__c.Name", "Restaurant__c.Description__c" ]
+            // May need these in the future
+            // "Restaurant__c.Address__City__s", 
+            // "Restaurant__c.Address__CountryCode__s", "Restaurant__c.Address__PostalCode__s",
+            // "Restaurant__c.Address__Street__s", "Restaurant__c.Address__StateCode__s" ]
     })
     wiredData(response) {
         this.wiredRestaurantData = response;
-        const mockAddress = {
-            'street' : "57-12 138th Street",
-            'city' : "Flushing",
-            'postal' : "11355",
-            'state' : "New York",
-            'country' : "United States of America"
-        }
         if (response.data) {
             let retrievedData = response.data.records.map(restaurantRecord => {
                 return {
                     Id: restaurantRecord.fields.Id.value,
                     Name: restaurantRecord.fields.Name.value,
-                    Location__Longitude__s: restaurantRecord.fields.Location__Longitude__s.value,
-                    Location__Latitude__s: restaurantRecord.fields.Location__Latitude__s.value,
-                    Address: mockAddress
+                    Description__c: restaurantRecord.fields.Description__c.value
                 }
             })
             this.restaurantData = retrievedData
@@ -71,85 +66,47 @@ export default class Restaurants extends LightningElement {
         }
     };
 
-
-    recordInputForCreate() {
-        if (!this.restaurantCreateDefaults.data) {
-            return undefined;
-        }
-
-        const restaurantObjectInfo =
-            this.restaurantCreateDefaults.data.objectInfos[
-              RESTAURANT_OBJECT.objectApiName
-            ];
-        const recordDefaults = this.restaurantCreateDefaults.data.record;
-        const recordInput = generateRecordInputForCreate(
-            recordDefaults,
-            restaurantObjectInfo
-        );
-        return recordInput;
-    }
-    
-    // test function that adds a record, hopefully refreshes
-    // dont use mockRecordInput here
-    handleAdd() {
-        this.recordInput = this.recordInputForCreate();
-        this.recordInput.fields.Name = "Add Test"
-        this.recordInput.fields.Location__Latitude__s = 12.1
-        this.recordInput.fields.Location__Longitude__s = 21.2
-        this.recordInput.fields.Travel_Plan__c = this.tripId
-
-        createRecord(this.recordInput)
-        .then(record => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                title: 'Success',
-                message: 'Record created',
-                variant: 'success'
-            })
-            );
-            return refreshApex(this.wiredRestaurantData)
-        }).catch(error => {
-            console.log("add error lol")
-        })
-    }
-
     handleClick() {
         restaurantModal.open({
           // maps to developer-created `@api options`
-          options: [
-            { id: 1, label: 'Option 1' },
-            { id: 2, label: 'Option 2' },
-          ]
+          tripId: this.tripId
         }).then((result) => {
-            console.log(result);
+            return refreshApex(this.wiredRestaurantData)
         });
     }
 
     // Deletes selected restaurants in the list. Fires off a toast message for successful deletion, or for a failed delete
     handleDelete() {
-        const promises = this.restaurantSelectedRows.map(restaurant => {
-            deleteRecord(restaurant.Id)
-        });
-        Promise.all(promises).then(restaurantList => {
-            console.log(restaurantList)
-            this.dispatchEvent(
-                new ShowToastEvent({
-                title: 'Success',
-                message: 'Deleted restaurant!',
-                variant: 'success'
-                })
-            );
-            // clearing selected rows so the check doesnt stay
-            this.template.querySelector('lightning-datatable').selectedRows = [];
-            return refreshApex(this.wiredRestaurantData);
-        }).error(error => {
+        if (this.restaurantSelectedRows.length == 0) {
             this.dispatchEvent(new ShowToastEvent({
                 title: 'Failed',
-                message: 'Failed to add restaurant!',
+                message: 'No value selected!',
                 variant: 'error'
             }))
-            console.log(error)
-        })
+            return
+        } else {
+            const promises = this.restaurantSelectedRows.map(restaurant => {
+                deleteRecord(restaurant.Id)
+            });
+            Promise.all(promises).then(restaurantList => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Deleted restaurant/s!',
+                    variant: 'success'
+                    })
+                );
+                // clearing selected rows so the check doesnt stay
+                this.template.querySelector('lightning-datatable').selectedRows = [];
+                return refreshApex(this.wiredRestaurantData);
+            }).error(error => {
+                this.dispatchEvent(new ShowToastEvent({
+                    title: 'Failed',
+                    message: 'Failed to delete restaurant!',
+                    variant: 'error'
+                }))
+            })
+        }
     }
 
     // Updates data table row selection in code
