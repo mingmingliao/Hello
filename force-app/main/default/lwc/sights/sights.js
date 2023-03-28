@@ -1,11 +1,8 @@
-import { LightningElement, track, wire, api } from 'lwc';
-import CreateTripModal from 'c/createTripModal';
+import { LightningElement, wire, api } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
-import { deleteRecord, getRecordCreateDefaults, 
-    generateRecordInputForCreate, createRecord } from 'lightning/uiRecordApi';
+import { deleteRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
-import SIGHT_OBJECT from '@salesforce/schema/Sight__c';
 import sightsModal from 'c/sightsModal';
 
 export default class Sights extends LightningElement {

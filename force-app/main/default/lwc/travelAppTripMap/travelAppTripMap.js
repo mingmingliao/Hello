@@ -3,15 +3,24 @@ import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 
 export default class TravelAppTripMap extends LightningElement {
     @api tripId
-    // mock address atm
-    collectedMapMarkers = [];
     restaurantData = [];
-    wiredRestaurantData;
     sightData = [];
-    wiredSightData;
     ticketAndReservationData = [];
-    wiredTicketAndReservationData;
     error;
+    mapMarkers = [];
+    // mock center
+    zoomLevel = 11
+    center = {
+        location: {
+            City: 'San Francisco',
+            Country: 'USA'
+        }
+    }
+
+    // wired variables
+    wiredRestaurantData;
+    wiredSightData;
+    wiredTicketAndReservationData;
 
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
@@ -120,16 +129,4 @@ export default class TravelAppTripMap extends LightningElement {
             this.restaurantData = [];
         }
     };
-    
-    mapMarkers = [];
-    // mock
-    zoomLevel = 11
-    center = {
-        location: {
-            City: 'San Francisco',
-            Country: 'USA'
-        }
-    }
-
-
 }
