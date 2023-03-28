@@ -1,11 +1,22 @@
 <template>
     <lightning-card>
-            <lightning-checkbox-group name="Checkbox Group"
-                                        label="Things to bring on my trip"
-                                        options={options}
-                                        value={value}
-                                        onchange={handleChange}></lightning-checkbox-group>
-            <p>Selected Values are: {selectedValues}</p>
-            <!-- input field to add to checkbox group -->
+        <lightning-checkbox-group name="Checkbox Group"
+                                  label="Things to bring on my trip"
+                                  options={options}
+                                  value={value}
+                                  onchange={handleChange}>
+        </lightning-checkbox-group>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="8">
+                <lightning-input padding="around-small" type="text"></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-medium" size="4">
+                <lightning-button label="Add Item" 
+                                  title="Non-primary action" 
+                                  onclick={handleClick} 
+                                  class="slds-m-left_x-small">
+                </lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
     </lightning-card>
 </template>

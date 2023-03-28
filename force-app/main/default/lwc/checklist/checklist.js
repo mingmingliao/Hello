@@ -1,6 +1,13 @@
 import { LightningElement } from 'lwc';
 
 export default class CheckboxGroupBasic extends LightningElement {
+
+    handleClick() {
+        
+    }
+
+    
+
     value = ['option1'];
 
     get options() {
