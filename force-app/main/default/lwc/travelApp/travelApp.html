@@ -11,7 +11,7 @@
             <template for:each={trips} for:item="trip">
                 <div key={trip.Id}>
                     <lightning-tab label={trip.Name}>
-                        <c-travel-app-trip trip-id={trip.Id}></c-travel-app-trip>
+                        <c-travel-app-trip trip-id={trip.Id} ondeletetrip={handleDeleteTrip}></c-travel-app-trip>
                     </lightning-tab>
                 </div>
             </template>
