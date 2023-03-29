@@ -9,14 +9,23 @@ export default class CreateTripModal extends LightningModal {
     objectApiName = TRAVEL_PLAN_OBJECT
     fields = [
         NAME_FIELD,
-        { fieldApiName: 'Address__Street__s', objectApiName: 'Travel_Plan__c' },
         { fieldApiName: 'Address__City__s', objectApiName: 'Travel_Plan__c' },
         { fieldApiName: 'Address__CountryCode__s', objectApiName: 'Travel_Plan__c' },
-        { fieldApiName: 'Address__StateCode__s', objectApiName: 'Travel_Plan__c' },
-        { fieldApiName: 'Address__PostalCode__s', objectApiName: 'Travel_Plan__c' }
+        { fieldApiName: 'Address__StateCode__s', objectApiName: 'Travel_Plan__c' }
     ]
+    
+    handleError() {
+    }
 
-    handleOptionClick() {
-        this.close('okay');
+    // Right now will still submit if fields are empty... 
+    // for demo purposes we can leave it like this
+    handleSubmit(event) {
+        event.preventDefault();
+        const formFields = event.detail.fields;
+        this.template.querySelector('lightning-record-form').submit(formFields);
+    }
+
+    handleSuccess(event) {
+        this.close()
     }
 }
