@@ -1,5 +1,6 @@
 import { LightningElement, api, wire } from 'lwc';
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
+import getCenterOfTravelPlan from '@salesforce/apex/TravelAppTripMapController.getCenterOfTravelPlan'
 
 export default class TravelAppTripMap extends LightningElement {
     @api tripId
@@ -9,18 +10,33 @@ export default class TravelAppTripMap extends LightningElement {
     error;
     mapMarkers = [];
     // mock center
-    zoomLevel = 11
-    center = {
-        location: {
-            City: 'San Francisco',
-            Country: 'USA'
-        }
-    }
-
+    zoomLevel;
+    center;
+    
     // wired variables
     wiredRestaurantData;
     wiredSightData;
     wiredTicketAndReservationData;
+
+    // On initialization
+    connectedCallback() {
+        getCenterOfTravelPlan({tripId: this.tripId}).then(locationData => {
+            this.center = {
+                location: locationData
+            }
+            console.log(locationData)
+            // set zoom levels based on what information is available
+            if (locationData.City) {
+                this.zoomLevel = 12;
+            } else if (locationData.State) {
+                this.zoomLevel = 7;
+            } else if (locationData.Country) {
+                this.zoomLevel = 4;
+            }
+        }).catch(error => {
+            console.log(error);
+        })
+    }
 
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
@@ -129,4 +145,5 @@ export default class TravelAppTripMap extends LightningElement {
             this.restaurantData = [];
         }
     };
+
 }

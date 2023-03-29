@@ -12,7 +12,7 @@ export default class Travel_app extends LightningElement {
     // change this to use result rather than {error, data}, will cause problems later when we update wired shit
     @wire(getTravelTrips) 
     wiredTripsResult(result) {
-        this.wiredTrip = result;
+        this.wiredTrips = result;
         if (result.data) {
             this.trips = result.data;
             this.error = undefined;
@@ -27,9 +27,12 @@ export default class Travel_app extends LightningElement {
     handleClick() {
         CreateTripModal.open({
           // maps to developer-created `@api options`
-          options: [{id:1, label:'what'}]
         }).then((result) => {
-            return refreshApex(this.wiredTrips)
+            return refreshApex(this.wiredTrips);
         });
+    }
+
+    handleDeleteTrip() {
+        return refreshApex(this.wiredTrips);
     }
 }
