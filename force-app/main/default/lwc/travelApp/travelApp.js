@@ -24,7 +24,7 @@ export default class Travel_app extends LightningElement {
         }
     };
 
-    handleClick() {
+    handleAddTrip() {
         CreateTripModal.open({
           // maps to developer-created `@api options`
         }).then((result) => {

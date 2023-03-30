@@ -57,8 +57,8 @@ export default class Restaurants extends LightningElement {
                     Name: restaurantRecord.fields.Name.value,
                     Description__c: restaurantRecord.fields.Description__c.value
                 }
-            })
-            this.restaurantData = retrievedData
+            });
+            this.restaurantData = retrievedData;
             this.error = undefined;
         } else if (response.error) {
             this.error = response.error;
@@ -66,34 +66,33 @@ export default class Restaurants extends LightningElement {
         }
     };
 
-    handleClick() {
+    handleAddRestaurant() {
         restaurantModal.open({
           // maps to developer-created `@api options`
           tripId: this.tripId
         }).then((result) => {
-            return refreshApex(this.wiredRestaurantData)
+            return refreshApex(this.wiredRestaurantData);
         });
     }
 
     // Deletes selected restaurants in the list. Fires off a toast message for successful deletion, or for a failed delete
-    handleDelete() {
+    handleDeleteRestaurant() {
         if (this.restaurantSelectedRows.length == 0) {
             this.dispatchEvent(new ShowToastEvent({
-                title: 'Failed',
-                message: 'No value selected!',
-                variant: 'error'
-            }))
-            return
+                    title: 'Failed',
+                    message: 'No value selected!',
+                    variant: 'error'
+                })
+            );
         } else {
             const promises = this.restaurantSelectedRows.map(restaurant => {
-                deleteRecord(restaurant.Id)
+                deleteRecord(restaurant.Id);
             });
             Promise.all(promises).then(restaurantList => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                    title: 'Success',
-                    message: 'Deleted restaurant/s!',
-                    variant: 'success'
+                this.dispatchEvent(new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Deleted restaurant/s!',
+                        variant: 'success'
                     })
                 );
                 // clearing selected rows so the check doesnt stay
@@ -104,14 +103,14 @@ export default class Restaurants extends LightningElement {
                     title: 'Failed',
                     message: 'Failed to delete restaurant!',
                     variant: 'error'
-                }))
-            })
+                }));
+            });
         }
     }
 
     // Updates data table row selection in code
-    handleRowSelection(event){
-        this.restaurantSelectedRows = event.detail.selectedRows
+    handleRestaurantRowSelection(event){
+        this.restaurantSelectedRows = event.detail.selectedRows;
     }
 
 }

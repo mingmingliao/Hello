@@ -31,13 +31,13 @@ export default class Sights extends LightningElement {
         this.wiredSightData = response;
         if (response.data) {
             let retrievedData = response.data.records.map(sightRecord => {
-            return {
-                Id: sightRecord.fields.Id.value,
-                Name: sightRecord.fields.Name.value,
-                Description__c: sightRecord.fields.Description__c.value
-            }
-            })
-            this.sightData = retrievedData
+                return {
+                    Id: sightRecord.fields.Id.value,
+                    Name: sightRecord.fields.Name.value,
+                    Description__c: sightRecord.fields.Description__c.value
+                }
+            });
+            this.sightData = retrievedData;
             this.error = undefined;
         } else if (response.error) {
             this.error = response.error;
@@ -45,17 +45,15 @@ export default class Sights extends LightningElement {
         }
     };
     
-    handleDelete() {
+    handleDeleteSight() {
         const promises = this.sightSelectedRows.map(sight => {
-            deleteRecord(sight.Id)
-            
+            deleteRecord(sight.Id);
         });
         Promise.all(promises).then(sightList => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                title: 'Success',
-                message: 'Deleted sight!',
-                variant: 'success'
+            this.dispatchEvent(new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Deleted sight!',
+                    variant: 'success'
                 })
             );
             // clearing selected rows so the check doesnt stay
@@ -63,26 +61,26 @@ export default class Sights extends LightningElement {
             return refreshApex(this.wiredSightData);
         }).error(error => {
             this.dispatchEvent(new ShowToastEvent({
-                title: 'Failed',
-                message: 'Failed to add sight!',
-                variant: 'error'
-            }))
+                    title: 'Failed',
+                    message: 'Failed to add sight!',
+                    variant: 'error'
+                })
+            );
         })
     }
 
-    handleClick() {
+    handleAddSight() {
         sightsModal.open({
             // maps to developer-created `@api options`
             tripId: this.tripId
         }).then((result) => {
-            return refreshApex(this.wiredRestaurantData)
+            return refreshApex(this.wiredRestaurantData);
         });
     }
 
 
     // Updates data table row selection in code
     handleRowSelection(event){
-        this.sightSelectedRows = event.detail.selectedRows
+        this.sightSelectedRows = event.detail.selectedRows;
     }
-
 }

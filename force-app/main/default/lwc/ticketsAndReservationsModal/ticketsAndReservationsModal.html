@@ -4,9 +4,9 @@
         <lightning-record-form
             object-api-name={objectApiName}
             fields={fields}
-            onsubmit={handleSubmit}
-            onerror={handleError}
-            onsuccess={handleSuccess}>
+            onsubmit={handleFormSubmit}
+            onerror={handleFormError}
+            onsuccess={handleFormSuccess}>
         </lightning-record-form>
     </lightning-modal-body>
 </template>
