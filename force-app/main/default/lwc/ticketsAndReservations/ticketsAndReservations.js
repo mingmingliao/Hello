@@ -78,7 +78,7 @@ export default class TicketsAndReservations extends LightningElement {
             // maps to developer-created `@api options`
             tripId: this.tripId
         }).then((result) => {
-            return refreshApex(this.wiredRestaurantData);
+            return refreshApex(this.wiredTicketAndReservationData);
         });
     }
 

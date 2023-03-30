@@ -74,7 +74,7 @@ export default class Sights extends LightningElement {
             // maps to developer-created `@api options`
             tripId: this.tripId
         }).then((result) => {
-            return refreshApex(this.wiredRestaurantData);
+            return refreshApex(this.wiredSightData);
         });
     }
 
