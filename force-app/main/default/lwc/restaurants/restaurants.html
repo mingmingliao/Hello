@@ -1,19 +1,17 @@
 <template>
     <lightning-card>
         <lightning-datatable
-            key-field="id"
+            key-field="Id"
             data={restaurantData}
-            onrowselection={handleRowSelection}
+            onrowselection={handleRestaurantRowSelection}
             columns={columns}>
         </lightning-datatable>
         <lightning-button
-            onclick={handleClick}
-            aria-haspopup="dialog"
+            onclick={handleAddRestaurant}
             label="Add a New Restaurant">
         </lightning-button>
         <lightning-button
-            onclick={handleDelete}
-            aria-haspopup="dialog"
+            onclick={handleDeleteRestaurant}
             label="Remove Selected">
         </lightning-button>
     </lightning-card>

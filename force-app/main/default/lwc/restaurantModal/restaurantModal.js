@@ -21,13 +21,13 @@ export default class restaurantModal extends LightningModal {
         { fieldApiName: 'Address__PostalCode__s', objectApiName: 'Restaurant__c' }
     ];
 
-    handleError() {
+    handleFormError() {
     }
 
     // TODO Should be data validation handling here
     // Right now will still submit if fields are empty... 
     // for demo purposes we can leave it like this
-    handleSubmit(event) {
+    handleFormSubmit(event) {
         event.preventDefault();
         const formFields = event.detail.fields;
         // Setting up relationship Id
@@ -35,7 +35,7 @@ export default class restaurantModal extends LightningModal {
         this.template.querySelector('lightning-record-form').submit(formFields);
     }
 
-    handleSuccess(event) {
-        this.close()
+    handleFormSuccess(event) {
+        this.close();
     }
 }

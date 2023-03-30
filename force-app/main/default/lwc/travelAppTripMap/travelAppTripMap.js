@@ -3,7 +3,7 @@ import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 import getCenterOfTravelPlan from '@salesforce/apex/TravelAppTripMapController.getCenterOfTravelPlan'
 
 export default class TravelAppTripMap extends LightningElement {
-    @api tripId
+    @api tripId;
     restaurantData = [];
     sightData = [];
     ticketAndReservationData = [];
@@ -11,7 +11,7 @@ export default class TravelAppTripMap extends LightningElement {
     mapMarkers = [];
     // mock center
     zoomLevel;
-    center;
+    mapCenter;
     
     // wired variables
     wiredRestaurantData;
@@ -21,10 +21,9 @@ export default class TravelAppTripMap extends LightningElement {
     // On initialization
     connectedCallback() {
         getCenterOfTravelPlan({tripId: this.tripId}).then(locationData => {
-            this.center = {
+            this.mapCenter = {
                 location: locationData
-            }
-            console.log(locationData)
+            };
             // set zoom levels based on what information is available
             if (locationData.City) {
                 this.zoomLevel = 12;
@@ -64,15 +63,15 @@ export default class TravelAppTripMap extends LightningElement {
                     },
                     title: ticketAndReservationRecord.fields.Name.value
                 }
-            })
-            this.ticketAndReservationData = retrievedData
+            });
+            this.ticketAndReservationData = retrievedData;
             this.error = undefined;
-            this.mapMarkers = this.ticketAndReservationData.concat(this.restaurantData).concat(this.sightData)
+            this.mapMarkers = this.ticketAndReservationData.concat(this.restaurantData).concat(this.sightData);
         } else if (response.error) {
             this.error = response.error;
             this.ticketAndReservationData = [];
         }
-    };
+    }
 
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
@@ -100,15 +99,15 @@ export default class TravelAppTripMap extends LightningElement {
                     },
                     title: sightRecord.fields.Name.value
                 }
-            })
-            this.sightData = retrievedData
+            });
+            this.sightData = retrievedData;
             this.error = undefined;
-            this.mapMarkers = this.ticketAndReservationData.concat(this.restaurantData).concat(this.sightData)
+            this.mapMarkers = this.ticketAndReservationData.concat(this.restaurantData).concat(this.sightData);
         } else if (response.error) {
             this.error = response.error;
             this.sightData = [];
         }
-    };
+    }
 
     @wire(getRelatedListRecords, {
         parentRecordId: '$tripId',
@@ -136,14 +135,13 @@ export default class TravelAppTripMap extends LightningElement {
                     },
                     title: restaurantRecord.fields.Name.value
                 }
-            })
-            this.restaurantData = retrievedData
+            });
+            this.restaurantData = retrievedData;
             this.error = undefined;
-            this.mapMarkers = this.ticketAndReservationData.concat(this.restaurantData).concat(this.sightData)
+            this.mapMarkers = this.ticketAndReservationData.concat(this.restaurantData).concat(this.sightData);
         } else if (response.error) {
             this.error = response.error;
             this.restaurantData = [];
         }
-    };
-
+    }
 }

@@ -34,12 +34,12 @@ export default class TicketsAndReservations extends LightningElement {
         this.wiredTicketAndReservationData = response;
         if (response.data) {
             let retrievedData = response.data.records.map(ticketAndReservationRecord => {
-            return {
-                Id: ticketAndReservationRecord.fields.Id.value,
-                Name: ticketAndReservationRecord.fields.Name.value,
-                Description__c: ticketAndReservationRecord.fields.Description__c.value
-            }
-            })
+                return {
+                    Id: ticketAndReservationRecord.fields.Id.value,
+                    Name: ticketAndReservationRecord.fields.Name.value,
+                    Description__c: ticketAndReservationRecord.fields.Description__c.value
+                }
+            });
             this.ticketAndReservationData = retrievedData
             this.error = undefined;
         } else if (response.error) {
@@ -48,12 +48,11 @@ export default class TicketsAndReservations extends LightningElement {
         }
     };
 
-    handleDelete() {
+    handleDeleteTicketOrReservation() {
         const promises = this.ticketAndReservationSelectedRows.map(ticketAndReservation => {
-            deleteRecord(ticketAndReservation.Id)
+            deleteRecord(ticketAndReservation.Id);
         });
           Promise.all(promises).then(ticketAndReservationList => {
-            console.log(ticketAndReservationList)
             this.dispatchEvent(
                 new ShowToastEvent({
                 title: 'Success',
@@ -66,25 +65,25 @@ export default class TicketsAndReservations extends LightningElement {
             return refreshApex(this.wiredTicketAndReservationData);
         }).error(error => {
             this.dispatchEvent(new ShowToastEvent({
-                title: 'Failed',
-                message: 'Failed to add ticket/reservation!',
-                variant: 'error'
-            }))
-            console.log(error)
+                    title: 'Failed',
+                    message: 'Failed to add ticket/reservation!',
+                    variant: 'error'
+                })
+            );
         })
     }
 
-    handleClick() {
+    handleAddTicketOrReservation() {
         ticketsAndReservationsModal.open({
             // maps to developer-created `@api options`
             tripId: this.tripId
         }).then((result) => {
-            return refreshApex(this.wiredRestaurantData)
+            return refreshApex(this.wiredRestaurantData);
         });
     }
 
     // Updates data table row selection in code
     handleRowSelection(event){
-        this.ticketAndReservationSelectedRows = event.detail.selectedRows
+        this.ticketAndReservationSelectedRows = event.detail.selectedRows;
     }
 }
